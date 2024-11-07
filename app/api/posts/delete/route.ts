@@ -1,9 +1,9 @@
 import { db } from '@/db';
 import { posts } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const postId = searchParams.get('id') as string;
@@ -13,14 +13,12 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
-    const post = await db
-      .select()
-      .from(posts)
+    const deletedPost = await db
+      .delete(posts)
       .where(eq(posts.id, parseInt(postId)))
       .execute();
-    return NextResponse.json(post);
+    return NextResponse.json({ status: 200, data: deletedPost });
   } catch (error: any) {
-    console.log('Error while fetching all posts ', error);
     return NextResponse.json(
       {
         error: error?.message,
