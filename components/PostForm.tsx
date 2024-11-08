@@ -67,16 +67,6 @@ export default function PostForm(props: Props) {
     }));
   };
 
-  // Retrieve enabled plugins' custom fields
-  // const customFields = pluginManager
-  //   .getCustomFields(post)
-  //   .then((fieldComponents) => {
-  //     console.log('fieldComponents ', fieldComponents);
-  //     fieldComponents.map((fieldComponent, index: number) => (
-  //       <div key={`custom-field-${index}`}>{fieldComponent}</div>
-  //     ));
-  //   });
-
   useEffect(() => {
     // Fetch custom fields asynchronously
     pluginManager.getCustomFields(post).then((fieldComponents) => {
@@ -147,7 +137,9 @@ export default function PostForm(props: Props) {
       {/* Render custom fields added by enabled plugins */}
       <div className="w-1/2">
         {customFields.map((fieldComponent, index) => (
-          <div key={`custom-field-${index}`}>{fieldComponent}</div>
+          <div key={`custom-field-${index}`} className="mb-6">
+            {fieldComponent}
+          </div>
         ))}
       </div>
 

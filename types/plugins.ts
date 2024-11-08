@@ -1,3 +1,4 @@
+import ImageSliderPlugin from '@/app/plugins/ImageSliderPlugin';
 import NewPlugin from '@/app/plugins/NewPlugin';
 import SamplePlugin from '@/app/plugins/SamplePlugin';
 
@@ -24,5 +25,12 @@ export const availablePlugins = [
     description: 'This is a new custom plugin for the CMS.',
     instance: NewPlugin,
     isEnabled: false, // Default state
+  },
+  {
+    id: 3,
+    name: 'Image Slider',
+    description: 'This is a image slider plugin',
+    instance: ImageSliderPlugin,
+    isEnabled: false,
   },
 ];

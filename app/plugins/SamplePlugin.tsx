@@ -9,9 +9,9 @@ const SamplePlugin: Plugin = {
   },
   addFields(post) {
     return (
-      <div key="sample-plugin flex flex-col gap-y-10 w-full">
+      <div key="sample-plugin" className="flex flex-col gap-y-3 w-full">
         <div>
-          <label>Sample Plugin:</label>
+          <label className="text-2xl font-bold">Sample Plugin:</label>
         </div>
         <div>
           <input
