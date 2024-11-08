@@ -1,9 +1,17 @@
 'use client';
 import { Button } from '@mui/material';
 import axios from 'axios';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+
+const IMAGES = [
+  'https://static.hbo.com/content/dam/hbodata/series/game-of-thrones/video-stills/season-01/game-of-thrones-season-1-episode-1-full-stitched-607175_PRO35_10-1920.jpg',
+  'https://m.media-amazon.com/images/M/MV5BOTA1NzUxMDktNjAwNC00ZWIwLTgyMjktZjEwMDRmMjBmYmJlXkEyXkFqcGdeQWplZmZscA@@._V1_QL75_UX500_CR0,0,500,281_.jpg',
+];
 
 export default function PostDetails() {
   const params = useParams();
@@ -63,6 +71,15 @@ export default function PostDetails() {
             Delete
           </Button>
         </div>
+      </div>
+      <div>
+        <Carousel>
+          {IMAGES.map((image: string, i: number) => (
+            <div key={i}>
+              <Image src={image} alt="image" width={1000} height={1000} />
+            </div>
+          ))}
+        </Carousel>
       </div>
       <div className="flex flex-col">
         <div className="text-xl font-bold mb-4">Description</div>

@@ -35,8 +35,9 @@ function ImageSliderField({ post }: any) {
 
   return (
     <div className="flex flex-col gap-y-3">
-      <div>
+      <div className="flex flex-col gap-y-1">
         <label className="text-2xl font-bold">Add Image URL:</label>
+        <span>Press Enter after entering one image URL</span>
       </div>
       <div>
         <input
@@ -49,7 +50,7 @@ function ImageSliderField({ post }: any) {
               e.currentTarget.value = ''; // Clear input field
             }
           }}
-          className="bg-transparent border border-gray-300 rounded-md min-h-12 w-full"
+          className="bg-transparent border border-gray-400 rounded-md min-h-12 w-full px-4 focus:outline-0"
         />
       </div>
       <div className="image-preview-container mt-4">

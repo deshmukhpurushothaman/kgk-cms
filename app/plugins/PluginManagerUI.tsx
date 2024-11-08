@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { pluginManager } from '@/app/plugins/PluginManager';
+import Switch from '@mui/joy/Switch';
 
 export default function PluginManagerUI() {
   const [availablePlugins, setAvailablePlugins] = useState(
@@ -23,20 +24,35 @@ export default function PluginManagerUI() {
     }
     setEnabledPlugins(pluginManager.getEnabledPlugins());
   };
-
+  console.log('enabledplugins ', enabledPlugins);
   return (
     <div>
-      <h2>Plugin Manager</h2>
-      <div>
-        <h3>Available Plugins</h3>
+      <h2 className="text-xl font-bold mt-4">Plugin Manager</h2>
+      <div className="mt-6">
+        <h3 className="font-bold mb-6">Available Plugins</h3>
         {availablePlugins.length > 0 ? (
           <ul>
             {availablePlugins.map((plugin) => (
-              <li key={plugin.id}>
-                {plugin.name} -{' '}
-                <button onClick={() => handleTogglePlugin(plugin.name)}>
-                  {enabledPlugins.includes(plugin.name) ? 'Disable' : 'Enable'}
-                </button>
+              <li key={plugin.id} className="border rounded-md px-3 py-4 mb-3">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <span className="text-lg ">{plugin.name} </span>
+
+                    <div>{plugin.description}</div>
+                  </div>
+
+                  <div>
+                    <Switch
+                      checked={enabledPlugins.includes(plugin.name)}
+                      onChange={() => handleTogglePlugin(plugin.name)}
+                      endDecorator={
+                        enabledPlugins.includes(plugin.name)
+                          ? 'Active'
+                          : 'Inactive'
+                      }
+                    />
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
