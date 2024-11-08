@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import PluginManagerUI from './plugins/PluginManagerUI';
 
 export default function Home() {
   return (
@@ -96,6 +97,7 @@ export default function Home() {
           Go to nextjs.org →
         </a>
       </footer>
+      <PluginManagerUI />
     </div>
   );
 }

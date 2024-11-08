@@ -4,6 +4,7 @@ import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import parse from 'html-react-parser';
 import { Button, TextField } from '@mui/material';
+import { pluginManager } from '@/app/plugins/PluginManager';
 
 type Props = {
   title?: string;
@@ -13,22 +14,21 @@ type Props = {
 };
 
 export default function PostForm(props: Props) {
+  const [customFields, setCustomFields] = useState<JSX.Element[]>([]);
   const [post, setPost] = useState({
     title: '',
     content: '',
     slug: '',
   });
-  const [previewPlaceholder, setPreviewPlaceholder] = useState(
-    'Your content looks like this...'
-  );
 
   useEffect(() => {
-    if (!props.title || !props.slug || !props.content) return;
-    setPost({
-      title: props.title,
-      slug: props.slug,
-      content: props.content,
-    });
+    if (props.title || props.slug || props.content) {
+      setPost({
+        title: props.title || '',
+        slug: props.slug || '',
+        content: props.content || '',
+      });
+    }
   }, [props]);
 
   const handleTitleChange = (value: string) => {
@@ -41,34 +41,49 @@ export default function PostForm(props: Props) {
   };
 
   const slugify = (value: string) => {
-    const newslug = value
+    return value
       .toLowerCase()
       .trim()
       .replace(/[^\w\s-]/g, '')
       .replace(/[\s_-]+/g, '-')
       .replace(/^-+|-+$/g, '');
-    // setPost({
-    //   ...post,
-    //   slug: newslug,
-    // });
-    return newslug;
   };
 
   function cleanQuillHtml(html: string) {
-    // Create a DOM element to work with the HTML string
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
-
-    // Remove `ql-ui` spans
     tempDiv.querySelectorAll('.ql-ui').forEach((node) => node.remove());
-
-    // Remove `data-list` attributes
     tempDiv
       .querySelectorAll('[data-list]')
       .forEach((node) => node.removeAttribute('data-list'));
-
     return tempDiv.innerHTML;
   }
+
+  // Handle dynamic fields from plugins
+  const handleCustomFieldChange = (key: string, value: any) => {
+    setPost((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  // Retrieve enabled plugins' custom fields
+  // const customFields = pluginManager
+  //   .getCustomFields(post)
+  //   .then((fieldComponents) => {
+  //     console.log('fieldComponents ', fieldComponents);
+  //     fieldComponents.map((fieldComponent, index: number) => (
+  //       <div key={`custom-field-${index}`}>{fieldComponent}</div>
+  //     ));
+  //   });
+
+  useEffect(() => {
+    // Fetch custom fields asynchronously
+    pluginManager.getCustomFields(post).then((fieldComponents) => {
+      // Update state with the resolved components
+      setCustomFields(fieldComponents);
+    });
+  }, []); // Dependencies - ensure this updates when `post` changes
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -83,7 +98,6 @@ export default function PostForm(props: Props) {
             className="rounded-lg w-1/2 mr-4 border border-gray-400"
           />
         </div>
-        <div></div>
       </div>
 
       <div>
@@ -124,13 +138,17 @@ export default function PostForm(props: Props) {
         </div>
         <div className="w-full">
           <span className="text-2xl font-bold">Preview</span>
-          <div
-            className="mt-3 min-h-20 border border-gray-300 text-black rounded-lg p-3"
-            // dangerouslySetInnerHTML={{ __html: cleanQuillHtml(content) }}
-          >
+          <div className="mt-3 min-h-20 border border-gray-300 text-black rounded-lg p-3">
             {parse(cleanQuillHtml(post.content))}
           </div>
         </div>
+      </div>
+
+      {/* Render custom fields added by enabled plugins */}
+      <div className="w-1/2">
+        {customFields.map((fieldComponent, index) => (
+          <div key={`custom-field-${index}`}>{fieldComponent}</div>
+        ))}
       </div>
 
       <div className="flex justify-center mt-4">
