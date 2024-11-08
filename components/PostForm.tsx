@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import parse from 'html-react-parser';
+import domToReact from 'html-react-parser';
 import { Button, TextField } from '@mui/material';
 import { pluginManager } from '@/app/plugins/PluginManager';
 
@@ -69,10 +70,12 @@ export default function PostForm(props: Props) {
 
   useEffect(() => {
     // Fetch custom fields asynchronously
-    pluginManager.getCustomFields(post).then((fieldComponents) => {
-      // Update state with the resolved components
-      setCustomFields(fieldComponents);
-    });
+    pluginManager
+      .getCustomFields(post, handleCustomFieldChange)
+      .then((fieldComponents) => {
+        // Update state with the resolved components
+        setCustomFields(fieldComponents);
+      });
   }, []); // Dependencies - ensure this updates when `post` changes
 
   return (
@@ -115,6 +118,15 @@ export default function PostForm(props: Props) {
           <div className="mt-3">
             <ReactQuill
               theme="snow"
+              modules={{
+                toolbar: [
+                  [{ header: [1, 2, false] }], // Header dropdown
+                  ['bold', 'italic', 'underline', 'strike'], // Formatting buttons
+                  [{ color: [] }, { background: [] }], // Color options
+                  ['link', 'image'], // Add other options you want to keep
+                  // Removed list options like ['list', 'bullet'] and ['indent']
+                ],
+              }}
               value={post.content}
               onChange={(e: string) => {
                 setPost({
@@ -128,9 +140,11 @@ export default function PostForm(props: Props) {
         </div>
         <div className="w-full">
           <span className="text-2xl font-bold">Preview</span>
-          <div className="mt-3 min-h-20 border border-gray-300 text-black rounded-lg p-3">
-            {parse(cleanQuillHtml(post.content))}
-          </div>
+          {post.content && (
+            <div className="mt-3 min-h-20 border border-gray-300 text-black rounded-lg p-3">
+              {parse(post.content)}
+            </div>
+          )}
         </div>
       </div>
 

@@ -7,6 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+import parse from 'html-react-parser';
 
 const IMAGES = [
   'https://static.hbo.com/content/dam/hbodata/series/game-of-thrones/video-stills/season-01/game-of-thrones-season-1-episode-1-full-stitched-607175_PRO35_10-1920.jpg',
@@ -86,7 +87,7 @@ export default function PostDetails() {
         <div
         // dangerouslySetInnerHTML={{ __html: post.content }}
         >
-          {post.content}
+          {parse(post.content)}
         </div>
       </div>
     </div>

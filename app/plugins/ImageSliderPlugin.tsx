@@ -18,13 +18,20 @@ const ImageSliderPlugin: Plugin = {
 };
 
 // React functional component to manage image slider fields
-function ImageSliderField({ post }: any) {
+function ImageSliderField({ post, onFieldChange }: any) {
+  console.log('post ', post, onFieldChange);
   const [images, setImages] = useState<string[]>(post.images || []);
 
   const handleAddImage = (url: string) => {
     const updatedImages = [...images, url];
     setImages(updatedImages);
     post.images = updatedImages; // Update post with new images
+    console.log(onFieldChange);
+    if (typeof onFieldChange === 'function') {
+      onFieldChange('customField', { images: updatedImages });
+    } else {
+      console.error('onFieldChange is not a function');
+    }
   };
 
   const handleRemoveImage = (index: number) => {

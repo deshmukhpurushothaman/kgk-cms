@@ -53,20 +53,18 @@ export const pluginManager = {
   // },
 
   // Retrieve custom fields from enabled plugins (example logic)
-  async getCustomFields(post: any) {
+  async getCustomFields(post: any, callback: Function) {
     const enabledPlugins = this.getEnabledPlugins(); // Retrieve enabled plugins
     const fields: any[] = [];
 
     for (const plugin of availablePlugins) {
       if (enabledPlugins.includes(plugin.name)) {
         try {
-          console.log('instance ', plugin.instance);
           const pluginModule = await import(
             `./${plugin.instance.componentName}`
           );
-          console.log('pluginModule ', pluginModule.default['addFields']);
           if (pluginModule.default['addFields']) {
-            fields.push(pluginModule.default['addFields'](post)); // Call the function dynamically
+            fields.push(pluginModule.default['addFields'](post, callback)); // Call the function dynamically
           } else {
             console.warn(`Function addfields not found in ${plugin.instance}`);
           }
@@ -78,7 +76,6 @@ export const pluginManager = {
         }
       }
     }
-
     return fields;
   },
 };
