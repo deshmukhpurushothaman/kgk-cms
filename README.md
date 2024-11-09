@@ -2,24 +2,60 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+Ensure you have the following installed on your local development environment:
+
+- [Node.js](https://nodejs.org/) (recommended version 16.x or later)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) package manager
+
+### Project Setup
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/deshmukhpurushothaman/kgk-cms.git
+   cd kgk-cms
+   ```
+
+2. **Install dependencies:**
+
+Using npm:
+
+```bash
+npm install
+```
+
+Using yarn:
+
+```bash
+yarn install
+```
+
+3. **Set up environment variables:**
+
+Create a `.env.local` file in the root directory and add the following environment variables. Update the values as necessary for your local setup.
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+
+# Database configuration
+DATABASE_URL=your_database_url
+DATABASE_HOST=your_database_host
+DATABASE_PORT=your_database_port
+DATABASE_NAME=your_database_name
+DATABASE_USERNAME=your_database_username
+DATABASE_PASSWORD=your_database_password
+```
+
+## Running the Development Server
+
+Start the development server with the following command:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The application will be available at http://localhost:3000. Open this URL in your browser to view the project.
