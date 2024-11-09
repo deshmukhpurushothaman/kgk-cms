@@ -31,7 +31,9 @@ export const imageSliderLink = pgTable('image_slider_link', {
   id: serial('id').primaryKey(),
   entityId: integer('entity_id').notNull(), // This stores the ID of the entity (e.g., post ID or comment ID)
   entityType: varchar('entity_type').notNull(), // The type of entity (e.g., 'post', 'comment')
-  imageSliderId: integer('image_slider_id').references(() => imageSlider.id), // Foreign key to the ImageSlider
+  imageSliderId: integer('image_slider_id')
+    .notNull()
+    .references(() => imageSlider.id), // Foreign key to the ImageSlider
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at')
     .defaultNow()

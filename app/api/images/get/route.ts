@@ -23,12 +23,12 @@ export async function GET(request: Request) {
       let fetchedImages = await db
         .select()
         .from(imageSlider)
-        .where(eq(imageSlider.id, imageLink.entityId));
+        .where(eq(imageSlider.id, imageLink.imageSliderId));
       images.push(fetchedImages);
     }
     return NextResponse.json({
       status: 200,
-      images,
+      images: images[0],
     });
   } catch (error: any) {
     console.log('Error getting images ', error);

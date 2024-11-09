@@ -11,26 +11,41 @@ type Props = {
   title?: string;
   slug?: string;
   content?: string;
-  onSubmit: (postData: any) => void;
+  [key: string]: any; // Allow additional fields dynamically
+  onSubmit?: (postData: any) => void;
 };
 
 export default function PostForm(props: Props) {
   const [customFields, setCustomFields] = useState<JSX.Element[]>([]);
-  const [post, setPost] = useState({
-    title: '',
-    content: '',
-    slug: '',
+  const [post, setPost] = useState<Props>({
+    title: props.title || '',
+    slug: props.slug || '',
+    content: props.content || '',
+    images: props.images || [],
   });
 
   useEffect(() => {
-    if (props.title || props.slug || props.content) {
+    // Avoid resetting state if `props` are unchanged or undefined
+    if (
+      props.title !== undefined &&
+      props.title !== post.title &&
+      props.slug !== undefined &&
+      props.slug !== post.slug &&
+      props.content !== undefined &&
+      props.content !== post.content
+    ) {
       setPost({
         title: props.title || '',
         slug: props.slug || '',
         content: props.content || '',
+        images: props.images || [],
       });
     }
   }, [props]);
+
+  useEffect(() => {
+    console.log('post ', post);
+  }, [post]);
 
   const handleTitleChange = (value: string) => {
     const newSlug = slugify(value);
@@ -50,19 +65,9 @@ export default function PostForm(props: Props) {
       .replace(/^-+|-+$/g, '');
   };
 
-  function cleanQuillHtml(html: string) {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    tempDiv.querySelectorAll('.ql-ui').forEach((node) => node.remove());
-    tempDiv
-      .querySelectorAll('[data-list]')
-      .forEach((node) => node.removeAttribute('data-list'));
-    return tempDiv.innerHTML;
-  }
-
   // Handle dynamic fields from plugins
   const handleCustomFieldChange = (key: string, value: any) => {
-    setPost((prev) => ({
+    setPost((prev: any) => ({
       ...prev,
       [key]: value,
     }));
@@ -76,7 +81,7 @@ export default function PostForm(props: Props) {
         // Update state with the resolved components
         setCustomFields(fieldComponents);
       });
-  }, []); // Dependencies - ensure this updates when `post` changes
+  }, [post]); // Dependencies - ensure this updates when `post` changes
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -161,7 +166,7 @@ export default function PostForm(props: Props) {
         <Button
           variant="contained"
           className="w-48"
-          onClick={() => props.onSubmit(post)}
+          onClick={() => props && props.onSubmit && props.onSubmit(post)}
         >
           Submit
         </Button>

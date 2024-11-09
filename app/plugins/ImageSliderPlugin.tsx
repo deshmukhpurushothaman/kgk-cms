@@ -1,5 +1,6 @@
+'use client';
 import { Plugin } from '../../types/plugins';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ImageSliderPlugin: Plugin = {
   name: 'Image Slider Plugin',
@@ -7,9 +8,18 @@ const ImageSliderPlugin: Plugin = {
   initialize() {
     console.log('Image Slider Plugin initialized!');
   },
-  addFields(post) {
+  addFields(post, callback) {
+    console.log('add gfield ', post);
     // Instead of using hooks here, return a component that uses hooks.
-    return <ImageSliderField key="image-slider" post={post} />;
+    return (
+      <ImageSliderField
+        key="image-slider"
+        post={post}
+        onFieldChange={(key: string, value: string) => {
+          callback(key, value);
+        }}
+      />
+    );
   },
   modifyContent(content) {
     // No content modification needed for this plugin
@@ -19,16 +29,23 @@ const ImageSliderPlugin: Plugin = {
 
 // React functional component to manage image slider fields
 function ImageSliderField({ post, onFieldChange }: any) {
-  console.log('post ', post, onFieldChange);
   const [images, setImages] = useState<string[]>(post.images || []);
+
+  useEffect(() => {
+    if (post.images.length > 0) {
+      setImages(post.images);
+    }
+  }, [post]);
 
   const handleAddImage = (url: string) => {
     const updatedImages = [...images, url];
     setImages(updatedImages);
     post.images = updatedImages; // Update post with new images
-    console.log(onFieldChange);
     if (typeof onFieldChange === 'function') {
-      onFieldChange('customField', { images: updatedImages });
+      onFieldChange('customField', {
+        images: updatedImages,
+        ...post.customField,
+      });
     } else {
       console.error('onFieldChange is not a function');
     }

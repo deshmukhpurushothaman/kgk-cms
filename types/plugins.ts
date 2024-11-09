@@ -7,7 +7,7 @@ export interface Plugin {
   name: string;
   componentName: string;
   initialize?: () => void;
-  addFields?: (post: any) => JSX.Element;
+  addFields?: (post: any, callback?: any) => JSX.Element;
   modifyContent?: (content: string) => string;
 }
 

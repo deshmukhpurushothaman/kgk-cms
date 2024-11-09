@@ -56,6 +56,7 @@ export const pluginManager = {
   async getCustomFields(post: any, callback: Function) {
     const enabledPlugins = this.getEnabledPlugins(); // Retrieve enabled plugins
     const fields: any[] = [];
+    console.log('custom fields sadf', post);
 
     for (const plugin of availablePlugins) {
       if (enabledPlugins.includes(plugin.name)) {
