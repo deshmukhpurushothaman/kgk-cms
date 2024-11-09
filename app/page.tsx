@@ -18,8 +18,8 @@ export default function Home() {
           <p className="text-lg text-gray-600 mb-6">
             Our CMS is designed to make content management easier, faster, and
             more efficient. With a user-friendly interface and powerful
-            features, managing your website’s content has never been more
-            straightforward. Whether you're adding, editing, or organizing
+            features, managing your website&apos;s content has never been more
+            straightforward. Whether you&apos;re adding, editing, or organizing
             content, our system provides everything you need to keep your site
             updated.
           </p>

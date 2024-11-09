@@ -18,9 +18,9 @@ export async function GET(request: Request) {
         )
       )
       .execute();
-    const images = [];
+    const images: any = [];
     for (const imageLink of imagesLink) {
-      let fetchedImages = await db
+      const fetchedImages = await db
         .select()
         .from(imageSlider)
         .where(eq(imageSlider.id, imageLink.imageSliderId));

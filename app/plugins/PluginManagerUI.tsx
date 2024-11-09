@@ -5,6 +5,7 @@ import Switch from '@mui/joy/Switch';
 import { Button, Modal, Box } from '@mui/material';
 
 export default function PluginManagerUI() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [availablePlugins, setAvailablePlugins] = useState(
     pluginManager.getAvailablePlugins()
   );

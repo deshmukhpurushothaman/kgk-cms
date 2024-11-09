@@ -16,7 +16,7 @@ export async function DELETE(request: Request) {
     const deletedPost = await db
       .delete(posts)
       .where(eq(posts.id, parseInt(postId)))
-      .execute();
+      .returning();
     return NextResponse.json({ status: 200, data: deletedPost });
   } catch (error: any) {
     return NextResponse.json(

@@ -1,14 +1,17 @@
 'use client';
-import 'react-quill-new/dist/quill.snow.css';
-import PostForm from '@/components/PostForm';
-import axios from 'axios';
+import dynamic from 'next/dynamic'; // Import dynamic to disable SSR
+import 'react-quill-new/dist/quill.snow.css'; // Ensure CSS is loaded
 import { useRouter } from 'next/navigation';
-import { Alert } from '@mui/material'; // Import Alert component
+import { Alert } from '@mui/material';
 import { useState } from 'react';
+import axios from 'axios';
+
+// Dynamically import PostForm with SSR disabled
+const PostForm = dynamic(() => import('@/components/PostForm'), { ssr: false });
 
 export default function Create() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null); // Error state
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (data: {
     title: any;
@@ -17,7 +20,7 @@ export default function Create() {
     customField?: { images: any };
   }) => {
     try {
-      let postPayload = {
+      const postPayload = {
         title: data.title,
         content: data.content,
         slug: data.slug,

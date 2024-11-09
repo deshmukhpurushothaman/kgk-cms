@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       })
       .returning();
     console.log('storedImages ', storedImage);
-    const storedImageLink = await db
+    await db
       .insert(imageSliderLink)
       .values({
         entityType: body.type,

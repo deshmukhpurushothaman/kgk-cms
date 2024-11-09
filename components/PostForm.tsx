@@ -1,4 +1,6 @@
 'use client';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';

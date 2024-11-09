@@ -32,7 +32,7 @@ export async function PUT(request: Request) {
         images: body.images,
       })
       .returning();
-    const storedImageLink = await db
+    await db
       .insert(imageSliderLink)
       .values({
         entityType: body.entityType,

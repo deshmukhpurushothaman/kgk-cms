@@ -23,7 +23,6 @@ export default function Update() {
     slug: '',
     content: '',
   });
-  const [imagePlugin, setImagePlugin] = useState([]);
   const [error, setError] = useState<string | null>(null); // Error state
 
   const postId = params.id as string;
@@ -53,8 +52,9 @@ export default function Update() {
         imagesPlugin.data.images &&
         imagesPlugin.data.images.length > 0
       ) {
-        setImagePlugin(imagesPlugin.data.images);
-        let images = imagesPlugin.data.images.map((image: any) => image.images);
+        const images = imagesPlugin.data.images.map(
+          (image: any) => image.images
+        );
         payload = {
           ...payload,
           images: images[0],

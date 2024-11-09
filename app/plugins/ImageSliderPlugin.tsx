@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { Plugin } from '../../types/plugins';
 import { useEffect, useState } from 'react';
 
@@ -83,7 +84,12 @@ function ImageSliderField({ post, onFieldChange }: any) {
             <ul>
               {images.map((url, index) => (
                 <li key={index} className="flex gap-x-4 items-center mt-2">
-                  <img src={url} alt={`Image ${index + 1}`} width="100" />
+                  <Image
+                    src={url}
+                    alt={`Image ${index + 1}`}
+                    width="100"
+                    height={100}
+                  />
                   <button
                     onClick={() => handleRemoveImage(index)}
                     className="text-red-500"

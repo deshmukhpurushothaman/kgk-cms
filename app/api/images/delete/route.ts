@@ -14,11 +14,11 @@ export async function DELETE(request: Request) {
         { status: 400 }
       );
     }
-    const deletedImage = await db
+    await db
       .delete(imageSlider)
       .where(eq(imageSlider.id, parseInt(imageId)))
-      .execute();
-    const deletedImageLink = await db
+      .returning();
+    await db
       .delete(imageSliderLink)
       .where(
         and(
@@ -26,7 +26,7 @@ export async function DELETE(request: Request) {
           eq(imageSliderLink.imageSliderId, parseInt(imageId))
         )
       )
-      .execute();
+      .returning();
     return NextResponse.json({ status: 200, message: 'Successful' });
   } catch (error: any) {
     console.log('Error in delete the image images->delete: ', error);
