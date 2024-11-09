@@ -12,20 +12,20 @@ export interface Plugin {
 }
 
 export const availablePlugins = [
-  {
-    id: 1,
-    name: 'Sample Plugin',
-    description: 'A sample plugin for demonstration',
-    instance: SamplePlugin,
-    isEnabled: false,
-  },
-  {
-    id: 2,
-    name: 'New Plugin',
-    description: 'This is a new custom plugin for the CMS.',
-    instance: NewPlugin,
-    isEnabled: false, // Default state
-  },
+  // {
+  //   id: 1,
+  //   name: 'Sample Plugin',
+  //   description: 'A sample plugin for demonstration',
+  //   instance: SamplePlugin,
+  //   isEnabled: false,
+  // },
+  // {
+  //   id: 2,
+  //   name: 'New Plugin',
+  //   description: 'This is a new custom plugin for the CMS.',
+  //   instance: NewPlugin,
+  //   isEnabled: false, // Default state
+  // },
   {
     id: 3,
     name: 'Image Slider',

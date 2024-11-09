@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { pluginManager } from '@/app/plugins/PluginManager';
 import Switch from '@mui/joy/Switch';
+import { Button, Modal, Box } from '@mui/material';
 
 export default function PluginManagerUI() {
   const [availablePlugins, setAvailablePlugins] = useState(
@@ -10,6 +11,8 @@ export default function PluginManagerUI() {
   const [enabledPlugins, setEnabledPlugins] = useState(
     pluginManager.getEnabledPlugins()
   );
+  const [openModal, setOpenModal] = useState(false);
+  const [currentPlugin, setCurrentPlugin] = useState<any>(null);
 
   const handleRegisterPlugin = (pluginName: string) => {
     // pluginManager.register(pluginName);
@@ -17,41 +20,52 @@ export default function PluginManagerUI() {
   };
 
   const handleTogglePlugin = (pluginName: string) => {
-    if (pluginManager.isEnabled(pluginName)) {
-      pluginManager.disablePlugin(pluginName);
+    setCurrentPlugin(pluginName);
+    setOpenModal(true); // Show confirmation modal
+  };
+
+  const confirmTogglePlugin = () => {
+    if (pluginManager.isEnabled(currentPlugin)) {
+      pluginManager.disablePlugin(currentPlugin);
     } else {
-      pluginManager.enablePlugin(pluginName);
+      pluginManager.enablePlugin(currentPlugin);
     }
     setEnabledPlugins(pluginManager.getEnabledPlugins());
+    setOpenModal(false); // Close the modal
   };
-  console.log('enabledplugins ', enabledPlugins);
+
+  const closeModal = () => {
+    setOpenModal(false);
+    setCurrentPlugin(null);
+  };
+
   return (
-    <div>
-      <h2 className="text-xl font-bold mt-4">Plugin Manager</h2>
-      <div className="mt-6">
-        <h3 className="font-bold mb-6">Available Plugins</h3>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Plugin Manager</h2>
+
+      <div className="mb-6">
+        <h3 className="font-semibold text-xl mb-4">Available Plugins</h3>
         {availablePlugins.length > 0 ? (
-          <ul>
+          <ul className="space-y-4">
             {availablePlugins.map((plugin) => (
-              <li key={plugin.id} className="border rounded-md px-3 py-4 mb-3">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="text-lg ">{plugin.name} </span>
-
-                    <div>{plugin.description}</div>
-                  </div>
-
-                  <div>
-                    <Switch
-                      checked={enabledPlugins.includes(plugin.name)}
-                      onChange={() => handleTogglePlugin(plugin.name)}
-                      endDecorator={
-                        enabledPlugins.includes(plugin.name)
-                          ? 'Active'
-                          : 'Inactive'
-                      }
-                    />
-                  </div>
+              <li
+                key={plugin.id}
+                className="flex justify-between items-center p-4 bg-white border rounded-lg shadow-md"
+              >
+                <div>
+                  <span className="text-lg font-medium">{plugin.name}</span>
+                  <p className="text-sm text-gray-600">{plugin.description}</p>
+                </div>
+                <div>
+                  <Switch
+                    checked={enabledPlugins.includes(plugin.name)}
+                    onChange={() => handleTogglePlugin(plugin.name)}
+                    endDecorator={
+                      enabledPlugins.includes(plugin.name)
+                        ? 'Active'
+                        : 'Inactive'
+                    }
+                  />
                 </div>
               </li>
             ))}
@@ -60,23 +74,52 @@ export default function PluginManagerUI() {
           <p>No available plugins.</p>
         )}
       </div>
-      {/* <div>
-        <h3>Register New Plugin</h3>
-        <input type="text" placeholder="Plugin Name" id="newPluginInput" />
-        <button
-          onClick={() => {
-            const input = document.getElementById(
-              'newPluginInput'
-            ) as HTMLInputElement;
-            if (input && input.value.trim()) {
-              handleRegisterPlugin(input.value.trim());
-              input.value = '';
-            }
+
+      {/* Modal for confirmation */}
+      <Modal
+        open={openModal}
+        onClose={closeModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            padding: 4,
+            borderRadius: 2,
+            boxShadow: 3,
           }}
         >
-          Register Plugin
-        </button>
-      </div> */}
+          <h2 id="modal-title" className="text-xl font-bold mb-4">
+            Confirm Plugin Action
+          </h2>
+          <p id="modal-description" className="mb-4 text-gray-700">
+            Are you sure you want to{' '}
+            {pluginManager.isEnabled(currentPlugin) ? 'deactivate' : 'activate'}{' '}
+            the <span className="font-semibold">{currentPlugin}</span> plugin?
+          </p>
+          <div className="flex justify-end gap-4">
+            <Button variant="outlined" onClick={closeModal}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color={
+                pluginManager.isEnabled(currentPlugin) ? 'error' : 'primary'
+              }
+              onClick={confirmTogglePlugin}
+            >
+              {pluginManager.isEnabled(currentPlugin)
+                ? 'Deactivate'
+                : 'Activate'}
+            </Button>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 }

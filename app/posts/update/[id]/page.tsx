@@ -4,6 +4,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import PostForm from '@/components/PostForm';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
+import { CircularProgress } from '@mui/material';
 
 interface Post {
   id?: string;
@@ -100,7 +101,9 @@ export default function Update() {
           images={post.images}
         />
       ) : (
-        <div>Loading...</div>
+        <div className="w-full h-full flex justify-center items-center">
+          <CircularProgress />
+        </div>
       )}
     </div>
   );

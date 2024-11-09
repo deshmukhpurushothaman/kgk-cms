@@ -24,7 +24,6 @@ export default function PostForm(props: Props) {
   });
 
   useEffect(() => {
-    // Avoid resetting state if `props` are unchanged or undefined
     if (
       props.title !== undefined &&
       props.title !== post.title &&
@@ -60,7 +59,6 @@ export default function PostForm(props: Props) {
       .replace(/^-+|-+$/g, '');
   };
 
-  // Handle dynamic fields from plugins
   const handleCustomFieldChange = (key: string, value: any) => {
     setPost((prev: any) => ({
       ...prev,
@@ -69,87 +67,98 @@ export default function PostForm(props: Props) {
   };
 
   useEffect(() => {
-    // Fetch custom fields asynchronously
     pluginManager
       .getCustomFields(post, handleCustomFieldChange)
       .then((fieldComponents) => {
-        // Update state with the resolved components
         setCustomFields(fieldComponents);
       });
-  }, [post]); // Dependencies - ensure this updates when `post` changes
+  }, [post]);
 
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-8 p-6 md:p-10 bg-gray-50 rounded-lg shadow-md">
+      {/* Title Section */}
       <div>
-        <span className="text-2xl font-bold">Title</span>
-        <div className="mt-2">
-          <TextField
-            value={post.title}
-            onChange={(e: any) => handleTitleChange(e.target.value)}
-            variant="outlined"
-            label="Title"
-            className="rounded-lg w-1/2 mr-4 border border-gray-400"
-          />
-        </div>
+        <span className="text-lg font-semibold text-gray-700">Title</span>
+        <TextField
+          value={post.title}
+          onChange={(e: any) => handleTitleChange(e.target.value)}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          placeholder="Enter post title"
+          InputProps={{
+            style: {
+              borderRadius: '8px',
+            },
+          }}
+        />
       </div>
 
+      {/* Slug Section */}
       <div>
-        <span className="text-2xl font-bold">Slug</span>
-        <div className="mt-2">
-          <TextField
-            value={post.slug}
-            onChange={(e: any) => {
-              const newslug = slugify(e.target.value);
+        <span className="text-lg font-semibold text-gray-700">Slug</span>
+        <TextField
+          value={post.slug}
+          onChange={(e: any) => {
+            const newSlug = slugify(e.target.value);
+            setPost({
+              ...post,
+              slug: newSlug,
+            });
+          }}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          placeholder="Generated slug"
+          InputProps={{
+            style: {
+              borderRadius: '8px',
+            },
+          }}
+        />
+      </div>
+
+      {/* Content Editor and Preview */}
+      <div className="flex flex-col md:flex-row gap-10">
+        {/* Editor */}
+        <div className="w-full">
+          <span className="text-lg font-semibold text-gray-700">Content</span>
+          <ReactQuill
+            theme="snow"
+            modules={{
+              toolbar: [
+                [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ color: [] }, { background: [] }],
+                ['link', 'image'],
+              ],
+            }}
+            value={post.content}
+            onChange={(e: string) => {
               setPost({
                 ...post,
-                slug: newslug,
+                content: e,
               });
             }}
-            variant="outlined"
-            label="Slug"
-            className="rounded-lg w-1/2 border border-gray-400"
+            className="mt-2 rounded-lg shadow-sm"
           />
         </div>
-      </div>
 
-      <div className="flex gap-x-10">
+        {/* Preview */}
         <div className="w-full">
-          <span className="text-2xl font-bold">Content</span>
-          <div className="mt-3">
-            <ReactQuill
-              theme="snow"
-              modules={{
-                toolbar: [
-                  [{ header: [1, 2, false] }], // Header dropdown
-                  ['bold', 'italic', 'underline', 'strike'], // Formatting buttons
-                  [{ color: [] }, { background: [] }], // Color options
-                  ['link', 'image'], // Add other options you want to keep
-                  // Removed list options like ['list', 'bullet'] and ['indent']
-                ],
-              }}
-              value={post.content}
-              onChange={(e: string) => {
-                setPost({
-                  ...post,
-                  content: e,
-                });
-              }}
-              className="rounded-lg outline-none border-none text-black"
-            />
-          </div>
-        </div>
-        <div className="w-full">
-          <span className="text-2xl font-bold">Preview</span>
-          {post.content && (
-            <div className="mt-3 min-h-20 border border-gray-300 text-black rounded-lg p-3">
+          <span className="text-lg font-semibold text-gray-700">Preview</span>
+          {post.content ? (
+            <div className="mt-3 min-h-20 bg-white border border-gray-300 text-gray-800 rounded-lg p-3 shadow-sm">
               {parse(post.content)}
             </div>
+          ) : (
+            <div className="mt-3 p-3 text-gray-400">No content to preview</div>
           )}
         </div>
       </div>
 
-      {/* Render custom fields added by enabled plugins */}
-      <div className="w-1/2">
+      {/* Custom Fields */}
+      <div className="w-full">
         {customFields.map((fieldComponent, index) => (
           <div key={`custom-field-${index}`} className="mb-6">
             {fieldComponent}
@@ -157,11 +166,14 @@ export default function PostForm(props: Props) {
         ))}
       </div>
 
-      <div className="flex justify-center mt-4">
+      {/* Submit Button */}
+      <div className="flex justify-center mt-6">
         <Button
           variant="contained"
-          className="w-48"
+          color="primary"
+          size="large"
           onClick={() => props && props.onSubmit && props.onSubmit(post)}
+          style={{ borderRadius: '8px', padding: '10px 20px' }}
         >
           Submit
         </Button>
