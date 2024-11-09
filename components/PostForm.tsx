@@ -52,11 +52,11 @@ export default function PostForm(props: Props) {
 
   const slugify = (value: string) => {
     return value
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+      .toLowerCase() // Convert to lowercase
+      .trim() // Remove leading and trailing whitespace
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except for spaces and hyphens
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-'); // Replace multiple hyphens with a single hyphen
   };
 
   const handleCustomFieldChange = (key: string, value: any) => {

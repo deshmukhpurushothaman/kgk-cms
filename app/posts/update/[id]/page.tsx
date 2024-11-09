@@ -4,7 +4,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import PostForm from '@/components/PostForm';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { CircularProgress } from '@mui/material';
+import { Alert, CircularProgress } from '@mui/material';
 
 interface Post {
   id?: string;
@@ -24,6 +24,7 @@ export default function Update() {
     content: '',
   });
   const [imagePlugin, setImagePlugin] = useState([]);
+  const [error, setError] = useState<string | null>(null); // Error state
 
   const postId = params.id as string;
 
@@ -62,6 +63,7 @@ export default function Update() {
       setPost(payload);
     } catch (error) {
       console.log('Error getting post ', error);
+      setError('Failed to fetch post. Please try again.'); // Set error message
     }
   };
 
@@ -84,14 +86,26 @@ export default function Update() {
       if (res.status === 200) {
         router.push(`/posts/${postId}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('Error updating post ', error);
+      setError(
+        error.response?.data?.error ||
+          'An error occurred while updating the post.'
+      ); // Set error message
     }
   };
 
   return (
     <div className="w-full p-4 mx-auto flex max-w-screen-xl flex-col">
       <div className="text-2xl font-bold mb-6">Update Post</div>
+
+      {/* Display alert if there's an error */}
+      {error && (
+        <Alert variant="filled" severity="error" className="mb-4">
+          {error}
+        </Alert>
+      )}
+
       {post.title || post.slug || post.content ? (
         <PostForm
           title={post.title}

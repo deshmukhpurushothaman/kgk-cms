@@ -13,6 +13,19 @@ export async function PUT(request: Request) {
       .returning();
     return NextResponse.json({ status: 200, data: updatedPost });
   } catch (error: any) {
+    if (error.code === '23505') {
+      // Error code for unique violation in PostgreSQL
+      console.log('Slug must be unique. Please choose a different slug.');
+      return NextResponse.json(
+        {
+          error: 'Slug must be unique. Please choose a different slug.',
+        },
+        {
+          status: 500,
+        }
+      );
+      // Handle the duplicate slug error (e.g., notify the user)
+    }
     return NextResponse.json(
       {
         error: error?.message,
