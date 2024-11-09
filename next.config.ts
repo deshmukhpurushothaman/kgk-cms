@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
       'unsplash.com',
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source:
+          'https://kgk-5crg15zms-deshmukhpurushothamangmailcoms-projects.vercel.app/:path*',
+        destination: 'https://kgk-cms.vercel.app/',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
