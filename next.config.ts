@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* Other config options here */
   images: {
     domains: [
       'www.google.com',
@@ -13,21 +13,19 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source:
-          'https://kgk-5crg15zms-deshmukhpurushothamangmailcoms-projects.vercel.app/:path*',
-        destination: 'https://kgk-cms.vercel.app/',
+        source: '/:path*',
+        destination: 'https://kgk-cms.vercel.app/:path*', // Destination URL with :path* mapping
       },
     ];
   },
   async headers() {
     return [
       {
-        // matching all API routes
-        source:
-          'https://kgk-5crg15zms-deshmukhpurushothamangmailcoms-projects.vercel.app/:path*',
+        // Apply these headers to all API routes
+        source: '/api/:path*', // Apply to your API routes
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          { key: 'Access-Control-Allow-Origin', value: '*' }, // replace this your actual origin
+          { key: 'Access-Control-Allow-Origin', value: '*' }, // Change '*' to your specific frontend origin for better security
           {
             key: 'Access-Control-Allow-Methods',
             value: 'GET,DELETE,PATCH,POST,PUT',
