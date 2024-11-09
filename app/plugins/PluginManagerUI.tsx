@@ -14,11 +14,6 @@ export default function PluginManagerUI() {
   const [openModal, setOpenModal] = useState(false);
   const [currentPlugin, setCurrentPlugin] = useState<any>(null);
 
-  const handleRegisterPlugin = (pluginName: string) => {
-    // pluginManager.register(pluginName);
-    setAvailablePlugins(pluginManager.getAvailablePlugins());
-  };
-
   const handleTogglePlugin = (pluginName: string) => {
     setCurrentPlugin(pluginName);
     setOpenModal(true); // Show confirmation modal

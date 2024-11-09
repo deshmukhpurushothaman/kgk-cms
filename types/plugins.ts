@@ -1,6 +1,4 @@
 import ImageSliderPlugin from '@/app/plugins/ImageSliderPlugin';
-import NewPlugin from '@/app/plugins/NewPlugin';
-import SamplePlugin from '@/app/plugins/SamplePlugin';
 
 // types/plugins.ts
 export interface Plugin {
