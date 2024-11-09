@@ -60,33 +60,54 @@ export default function PostDetails() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-screen-xl p-4 sm:p-8 flex flex-col">
+    <div className="mx-auto w-full max-w-screen-xl p-6 sm:p-12 flex flex-col bg-white shadow-lg rounded-lg">
       {/* Header Section */}
-      <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row justify-between">
-        <div className="font-bold text-2xl sm:text-4xl mb-4 sm:mb-0">
+      <div className="mb-8 flex flex-col sm:flex-row justify-between items-center">
+        <div className="font-bold text-3xl sm:text-4xl text-gray-800 mb-4 sm:mb-0">
           {post.title}
         </div>
         <div className="flex gap-x-4 sm:gap-x-8">
-          <Button variant="contained">
-            <Link href={`/posts/update/${post.id}`}>Update</Link>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            className="py-2 px-6"
+          >
+            <Link href={`/posts/update/${post.id}`} className="text-white">
+              Update
+            </Link>
           </Button>
-          <Button variant="outlined" onClick={() => deletePost(post.id)}>
+          <Button
+            variant="outlined"
+            color="error"
+            size="large"
+            className="py-2 px-6"
+            onClick={() => deletePost(post.id)}
+          >
             Delete
           </Button>
         </div>
       </div>
 
       {/* Image Carousel */}
-      <div className="mb-4 sm:mb-8">
-        <Carousel>
+      <div className="mb-8">
+        <Carousel
+          showArrows={true}
+          showThumbs={false}
+          autoPlay={true}
+          infiniteLoop={true}
+          emulateTouch={true}
+          stopOnHover={true}
+          className="rounded-lg overflow-hidden"
+        >
           {IMAGES.map((image: string, i: number) => (
             <div key={i}>
               <Image
                 src={image}
-                alt="image"
+                alt="Post Image"
                 width={1000}
-                height={1000}
-                className="w-full h-auto object-cover"
+                height={600}
+                className="w-full h-auto object-cover rounded-lg"
               />
             </div>
           ))}
@@ -95,10 +116,12 @@ export default function PostDetails() {
 
       {/* Description Section */}
       <div className="flex flex-col">
-        <div className="text-lg sm:text-xl font-bold mb-2 sm:mb-4">
+        <div className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
           Description
         </div>
-        <div>{parse(post.content)}</div>
+        <div className="text-lg sm:text-xl text-gray-700 space-y-4">
+          {parse(post.content)}
+        </div>
       </div>
     </div>
   );
