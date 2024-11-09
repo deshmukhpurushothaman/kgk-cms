@@ -8,15 +8,26 @@ const Sidebar = () => {
 
   return (
     <>
+      {/* Menu Button */}
       <div
         onClick={handleToggle}
         className={clsx('block cursor-pointer border px-3 py-2 lg:hidden')}
       >
         {isOpen ? 'Close' : 'Menu'}
       </div>
+
+      {/* Overlay to cover underlying content */}
+      {isOpen && (
+        <div
+          onClick={handleToggle} // Close menu if overlay is clicked
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+        ></div>
+      )}
+
+      {/* Sidebar Navigation */}
       <div
         className={clsx(
-          'bg-white h-screen border-r-2 absolute w-screen p-3 shadow-lg transition-all duration-300 ease-in-out lg:relative lg:block lg:max-w-[15vw] lg:translate-x-0 border-gray-200',
+          'bg-white h-screen border-r-2 absolute w-screen p-3 shadow-lg transition-all duration-300 ease-in-out lg:relative lg:block lg:max-w-[15vw] lg:translate-x-0 border-gray-200 z-50', // Added z-index
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >

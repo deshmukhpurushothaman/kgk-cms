@@ -45,18 +45,10 @@ export const pluginManager = {
     return Object.keys(enabledPlugins).filter((key) => enabledPlugins[key]);
   },
 
-  // Register a new plugin (adds to the list of available plugins)
-  // register(pluginName: string) {
-  //   if (!this.availablePlugins.includes(pluginName)) {
-  //     this.availablePlugins.push(pluginName);
-  //   }
-  // },
-
   // Retrieve custom fields from enabled plugins (example logic)
   async getCustomFields(post: any, callback: Function) {
     const enabledPlugins = this.getEnabledPlugins(); // Retrieve enabled plugins
     const fields: any[] = [];
-    console.log('custom fields sadf', post);
 
     for (const plugin of availablePlugins) {
       if (enabledPlugins.includes(plugin.name)) {

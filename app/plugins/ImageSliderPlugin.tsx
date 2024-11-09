@@ -9,7 +9,6 @@ const ImageSliderPlugin: Plugin = {
     console.log('Image Slider Plugin initialized!');
   },
   addFields(post, callback) {
-    console.log('add gfield ', post);
     // Instead of using hooks here, return a component that uses hooks.
     return (
       <ImageSliderField

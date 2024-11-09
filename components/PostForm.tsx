@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import parse from 'html-react-parser';
-import domToReact from 'html-react-parser';
 import { Button, TextField } from '@mui/material';
 import { pluginManager } from '@/app/plugins/PluginManager';
 
@@ -42,10 +41,6 @@ export default function PostForm(props: Props) {
       });
     }
   }, [props]);
-
-  useEffect(() => {
-    console.log('post ', post);
-  }, [post]);
 
   const handleTitleChange = (value: string) => {
     const newSlug = slugify(value);

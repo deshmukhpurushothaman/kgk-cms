@@ -60,35 +60,45 @@ export default function PostDetails() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-xl flex-col p-8">
-      <div className="mb-8 flex justify-between">
-        <div className="font-bold text-4xl">{post.title}</div>
-        <div className="flex gap-x-8">
+    <div className="mx-auto w-full max-w-screen-xl p-4 sm:p-8 flex flex-col">
+      {/* Header Section */}
+      <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row justify-between">
+        <div className="font-bold text-2xl sm:text-4xl mb-4 sm:mb-0">
+          {post.title}
+        </div>
+        <div className="flex gap-x-4 sm:gap-x-8">
           <Button variant="contained">
             <Link href={`/posts/update/${post.id}`}>Update</Link>
           </Button>
-
           <Button variant="outlined" onClick={() => deletePost(post.id)}>
             Delete
           </Button>
         </div>
       </div>
-      <div>
+
+      {/* Image Carousel */}
+      <div className="mb-4 sm:mb-8">
         <Carousel>
           {IMAGES.map((image: string, i: number) => (
             <div key={i}>
-              <Image src={image} alt="image" width={1000} height={1000} />
+              <Image
+                src={image}
+                alt="image"
+                width={1000}
+                height={1000}
+                className="w-full h-auto object-cover"
+              />
             </div>
           ))}
         </Carousel>
       </div>
+
+      {/* Description Section */}
       <div className="flex flex-col">
-        <div className="text-xl font-bold mb-4">Description</div>
-        <div
-        // dangerouslySetInnerHTML={{ __html: post.content }}
-        >
-          {parse(post.content)}
+        <div className="text-lg sm:text-xl font-bold mb-2 sm:mb-4">
+          Description
         </div>
+        <div>{parse(post.content)}</div>
       </div>
     </div>
   );
