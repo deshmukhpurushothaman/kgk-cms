@@ -13,8 +13,8 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: '/:path*',
-        destination: 'https://kgk-cms.vercel.app/:path*', // Destination URL with :path* mapping
+        source: '/api/:path*', // Only match API routes
+        destination: 'https://kgk-cms.vercel.app/api/:path*', // Forward only specific API paths
       },
     ];
   },
